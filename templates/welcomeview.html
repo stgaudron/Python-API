@@ -1,0 +1,333 @@
+<!doctype html>
+<head>
+  <meta http-equiv="content-type" content="text/html"; charset="utf-8"
+<title>{% block title %}myApi Flask Pymongo{% endblock %}</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<nav>
+  <ul>
+    {% if g.user %}
+      <li><span>{{ g.user['username'] }}</span>
+    {% else %}
+      <li><span>No connected user</span>
+    {% endif %}
+  </ul>
+</nav>
+<section class="content">
+  <header>
+    {% block header %}{% endblock %}
+  </header>
+  {% for message in get_flashed_messages() %}
+    <div class="flash">{{ message }}</div>
+  {% endfor %}
+  {% block content %}
+  <div class="wrapper">
+
+  <div class="table">
+
+    <div class="row header">
+      <div class="cell">
+        Users
+      </div>
+      <div class="cell">
+        Http Method
+      </div>
+      <div class="cell">
+        Description
+      </div>
+      <div class="cell">
+        Url
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="cell" data-title="Users">
+        get_users()
+      </div>
+      <div class="cell" data-title="Http Method">
+        GET
+      </div>
+      <div class="cell" data-title="Description">
+        Return all users
+      </div>
+      <div class="cell" data-title="Url">
+        http://localhost:5000/users
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="cell" data-title="Name">
+        add_user()
+      </div>
+      <div class="cell" data-title="Age">
+        POST
+      </div>
+      <div class="cell" data-title="Occupation">
+        Add user (expected JSON username, email, password)</br>
+        Return JSON(id : username, email, hashed_pwd)
+      </div>
+      <div class="cell" data-title="Location">
+        http://localhost:5000/users
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="cell" data-title="Name">
+        get-user()
+      </div>
+      <div class="cell" data-title="Age">
+        GET
+      </div>
+      <div class="cell" data-title="Occupation">
+        Return JSON(id : username, email, hashed_pwd)
+      </div>
+      <div class="cell" data-title="Location">
+        http://localhost:5000/user/<username>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="cell" data-title="Name">
+        modify_user()
+      </div>
+      <div class="cell" data-title="Age">
+        PUT
+      </div>
+      <div class="cell" data-title="Occupation">
+        Modify user (expected JSON username, email, password)</br>
+        Return JSON(id : username, email, hashed_pwd)
+      </div>
+      <div class="cell" data-title="Location">
+        http://localhost:5000/user/<id>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="cell" data-title="Name">
+        delete_user()
+      </div>
+      <div class="cell" data-title="Age">
+        DELETE
+      </div>
+      <div class="cell" data-title="Occupation">
+        Return 'deleted'</br>
+      </div>
+      <div class="cell" data-title="Location">
+        http://localhost:5000/user/<id>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="cell" data-title="Name">
+        login()
+      </div>
+      <div class="cell" data-title="Age">
+        POST
+      </div>
+      <div class="cell" data-title="Occupation">
+        Login (expected JSON email, password)</br>
+        Return 'logged in'
+      </div>
+      <div class="cell" data-title="Location">
+        http://localhost:5000/auth/login
+      </div>
+    </div>
+
+
+  </div>
+
+  <div class="table">
+
+    <div class="row header green">
+      <div class="cell">
+        Articles
+      </div>
+      <div class="cell">
+        Http Method
+      </div>
+      <div class="cell">
+        Description
+      </div>
+      <div class="cell">
+        Url
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="cell" data-title="Users">
+        get_articles()
+      </div>
+      <div class="cell" data-title="Http Method">
+        GET
+      </div>
+      <div class="cell" data-title="Description">
+        Return all articles
+      </div>
+      <div class="cell" data-title="Url">
+        http://localhost:5000/articles
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="cell" data-title="Users">
+        write_article()
+      </div>
+      <div class="cell" data-title="Http Method">
+        POST
+      </div>
+      <div class="cell" data-title="Description">
+        Add article (expected JSON title, body)</br>
+        Return JSON(title, body, created, author, modified)
+      </div>
+      <div class="cell" data-title="Url">
+        http://localhost:5000/articles
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="cell" data-title="Users">
+        get_article()
+      </div>
+      <div class="cell" data-title="Http Method">
+        GET
+      </div>
+      <div class="cell" data-title="Description">
+        Return JSON(title, body, created, author, modified)
+      </div>
+      <div class="cell" data-title="Url">
+        http://localhost:5000/article/&lt;id&gt;
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="cell" data-title="Users">
+        modify_article()
+      </div>
+      <div class="cell" data-title="Http Method">
+        PUT
+      </div>
+      <div class="cell" data-title="Description">
+        Modify article (expected JSON title, body)</br>
+        Return JSON(title, body, created, author, modified)
+      </div>
+      <div class="cell" data-title="Url">
+        http://localhost:5000/article/&lt;id&gt;
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="cell" data-title="Users">
+        delete_article()
+      </div>
+      <div class="cell" data-title="Http Method">
+        DELETE
+      </div>
+      <div class="cell" data-title="Description">
+        Return 'deleted'
+      </div>
+      <div class="cell" data-title="Url">
+        http://localhost:5000/article/&lt;id&gt;
+      </div>
+    </div>
+
+  </div>
+
+  <div class="table">
+
+    <div class="row header blue">
+      <div class="cell">
+        Comments
+      </div>
+      <div class="cell">
+        Http Method
+      </div>
+      <div class="cell">
+        Description
+      </div>
+      <div class="cell">
+        Url
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="cell" data-title="Users">
+        get_comments_by_article()
+      </div>
+      <div class="cell" data-title="Http Method">
+        GET
+      </div>
+      <div class="cell" data-title="Description">
+        Return all comments for an article &lt;id&gt;
+      </div>
+      <div class="cell" data-title="Url">
+        http://localhost:5000/article/&lt;id&gt/comments;
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="cell" data-title="Users">
+        get_comments_by_author()
+      </div>
+      <div class="cell" data-title="Http Method">
+        DELETE
+      </div>
+      <div class="cell" data-title="Description">
+        Return all comments for an author &lt;author&gt;
+      </div>
+      <div class="cell" data-title="Url">
+        http://localhost:5000/article/comments/&lt;author&gt;
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="cell" data-title="Users">
+        post_comment()
+      </div>
+      <div class="cell" data-title="Http Method">
+        POST
+      </div>
+      <div class="cell" data-title="Description">
+        Post comment for an article &lt;id&gt;
+        Return JSON(id : content, created, author, modified)
+      </div>
+      <div class="cell" data-title="Url">
+        http://localhost:5000/article/&lt;id&gt/comments;
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="cell" data-title="Users">
+        edit_comment()
+      </div>
+      <div class="cell" data-title="Http Method">
+        PUT
+      </div>
+      <div class="cell" data-title="Description">
+        Edit comment by comment &lt;id&gt;
+        Return JSON(id : content, created, author, modified)
+      </div>
+      <div class="cell" data-title="Url">
+        http://localhost:5000/article/comment/&lt;id&gt;
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="cell" data-title="Users">
+        delete_comment()
+      </div>
+      <div class="cell" data-title="Http Method">
+        DELETE
+      </div>
+      <div class="cell" data-title="Description">
+        Return 'deleted'
+      </div>
+      <div class="cell" data-title="Url">
+        http://localhost:5000/article/comment/&lt;id&gt;
+      </div>
+    </div>
+
+  </div>
+
+</div>
+  {% endblock %}
+</section>
